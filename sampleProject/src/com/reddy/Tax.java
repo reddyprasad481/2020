@@ -24,7 +24,7 @@ public class Tax {
 				
 				calculateSavings(amount);
 				
-				
+				System.out.println("=================================");
 				System.out.println("enter 0 to exit");
 				System.out.println("enter amount to cal savings");
 				length = br.readLine();
@@ -43,9 +43,45 @@ public class Tax {
 		float newTax = getNewTax(amount);
 		
 		float difInTax = oldTax - newTax;
-		System.out.println("Old:"+oldTax);
-		System.out.println("New:"+newTax);
-		System.out.println("Diff:"+difInTax);
+		System.out.println("Old Tax:"+oldTax);
+		System.out.println("New Tax:"+newTax);
+		System.out.println("Tax Diff:"+difInTax);
+		
+		double savings = getSavingsToNullifyDifference(amount, difInTax);
+		System.out.println("Savings Needed:"+savings);
+	}
+
+	private static double getSavingsToNullifyDifference(int amount, float difInTax) {
+
+		double savings = 0;
+
+		if(amount>SLAB_5L){
+
+			float higestSlabTax = 0;
+			if(amount>=SLAB_10L){
+
+				higestSlabTax += (amount -SLAB_10L)*(0.3);
+				
+				if(higestSlabTax>=difInTax){
+					
+					savings = difInTax/(0.3);
+					
+				}else{
+					
+					difInTax -=higestSlabTax;
+					
+					savings = (amount -SLAB_10L) + (difInTax/(0.2));
+					
+				}
+				
+			}else if(amount>=SLAB_5L){
+
+				savings = difInTax/(0.2);
+			}
+
+
+		}
+		return savings;
 	}
 
 	private static float getNewTax(int amount) {
